@@ -12,9 +12,16 @@ namespace BarkodOkuyucuYS
 {
     public partial class Form1 : Form
     {
+        public Form2 islemlerForm;
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            islemlerForm = new Form2();
+            islemlerForm.Show();
         }
     }
 }
