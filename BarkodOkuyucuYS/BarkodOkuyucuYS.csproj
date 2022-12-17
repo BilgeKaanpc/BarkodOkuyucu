@@ -97,6 +97,12 @@
     <Compile Include="stokEkle.Designer.cs">
       <DependentUpon>stokEkle.cs</DependentUpon>
     </Compile>
+    <Compile Include="urunlerListesi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="urunlerListesi.Designer.cs">
+      <DependentUpon>urunlerListesi.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="fiyatguncelle.resx">
       <DependentUpon>fiyatguncelle.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +126,9 @@
     </Compile>
     <EmbeddedResource Include="stokEkle.resx">
       <DependentUpon>stokEkle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="urunlerListesi.resx">
+      <DependentUpon>urunlerListesi.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

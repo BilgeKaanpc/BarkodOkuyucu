@@ -16,6 +16,7 @@ namespace BarkodOkuyucuYS
         public productAdd urunEklePage;
         public stokEkle stokEkle;
         public fiyatguncelle fiyatGuncelle;
+        public urunlerListesi tumUrunler;
         public Form2()
         {
             InitializeComponent();
@@ -39,6 +40,13 @@ namespace BarkodOkuyucuYS
         {
             fiyatGuncelle = new fiyatguncelle();
             fiyatGuncelle.Show();
+            this.Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            tumUrunler = new urunlerListesi();
+            tumUrunler.Show();
             this.Close();
         }
     }
