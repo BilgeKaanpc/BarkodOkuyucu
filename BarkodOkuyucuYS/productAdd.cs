@@ -59,7 +59,7 @@ namespace BarkodOkuyucuYS
             else
             {
 
-                DatabaseHelper.DataAdd(maskedTextBox4, textBox2, maskedTextBox2, maskedTextBox3, maskedTextBox1);
+                DatabaseHelper.DataAdd(maskedTextBox4, textBox2, maskedTextBox2, maskedTextBox3, maskedTextBox1,radioButton1,radioButton2,radioButton3);
             }
 
 
@@ -75,11 +75,11 @@ namespace BarkodOkuyucuYS
     {
 
         static DataTable dt;
-        public static void DataAdd(MaskedTextBox t1, TextBox t2, MaskedTextBox t3, MaskedTextBox t5, MaskedTextBox t4)
+        public static void DataAdd(MaskedTextBox t1, TextBox t2, MaskedTextBox t3, MaskedTextBox t5, MaskedTextBox t4,RadioButton r1,RadioButton r2,RadioButton r3)
         {
             Baglan.connection.Open();
 
-            SQLiteCommand ekle = new SQLiteCommand("insert into urunler (barkod,isim,satis,alis,stok) values (@k1,@k2,@k3,@k4,@k5)", Baglan.connection);
+            SQLiteCommand ekle = new SQLiteCommand("insert into urunler (barkod,isim,satis,alis,stok,tur) values (@k1,@k2,@k3,@k4,@k5,@k6)", Baglan.connection);
 
 
             ekle.Parameters.AddWithValue("@k1", t1.Text);
@@ -105,6 +105,26 @@ namespace BarkodOkuyucuYS
 
                 ekle.Parameters.AddWithValue("@k5", 0);
             }
+
+            if (r1.Checked)
+            {
+                ekle.Parameters.AddWithValue("@k6", "Alkol");
+                r1.Checked = false;
+            }
+            else if (r2.Checked)
+            {
+                ekle.Parameters.AddWithValue("@k6", "Bira");
+                r2.Checked = false;
+            }
+            else if (r3.Checked)
+            {
+                ekle.Parameters.AddWithValue("@k6", "Sigara");
+                r3.Checked = false;
+            }
+            else
+            {
+                ekle.Parameters.AddWithValue("@k6", "Diğer");
+            }
             ekle.ExecuteNonQuery();
 
             Baglan.connection.Close();
@@ -113,6 +133,7 @@ namespace BarkodOkuyucuYS
             t3.Clear();
             t4.Clear();
             t5.Clear();
+            
         }
 
         public static DataTable Listele(string sql)
@@ -122,6 +143,62 @@ namespace BarkodOkuyucuYS
             adtr.Fill(dt);
             return dt;
         }
+
+        public static void DataUpdate(string valueSatis,string valueAlis,string barkod)
+        {
+            Baglan.connection.Open();
+
+            SQLiteCommand update = new SQLiteCommand("Update urunler set satis= '" + valueSatis + " ' where barkod = " + barkod , Baglan.connection);
+            SQLiteCommand updatealis = new SQLiteCommand("Update urunler set alis= '" + valueAlis + " ' where barkod = " + barkod, Baglan.connection);
+            update.ExecuteNonQuery();
+            updatealis.ExecuteNonQuery();
+            Baglan.connection.Close();
+
+            
+        }
+
+        public static SQLiteDataReader getData(string barkod)
+        {
+            SQLiteCommand get = new SQLiteCommand("Select * from urunler where barkod = "+barkod,Baglan.connection);
+            SQLiteDataReader drm = get.ExecuteReader();
+
+            return drm;
+        }
+
+        public static void stokEkle(int value,string barkod)
+        {
+            Baglan.connection.Open();
+            SQLiteCommand update = new SQLiteCommand("Update urunler set stok= '" + value.ToString() + " ' where barkod = " + barkod, Baglan.connection);
+            update.ExecuteNonQuery();
+            Baglan.connection.Close();
+        }
+
+        public static void satisEkle(string tur,string total,string kar,string urunler)
+        {
+            Baglan.connection.Open();
+            SQLiteCommand ekle = new SQLiteCommand("insert into satislar (tur,total,kar,urunler,tarih) values (@k1,@k2,@k3,@k4,@k5)", Baglan.connection);
+            ekle.Parameters.AddWithValue("@k1", tur);
+            ekle.Parameters.AddWithValue("@k2", total);
+            ekle.Parameters.AddWithValue("@k3", kar);
+            ekle.Parameters.AddWithValue("@k4", urunler);
+            ekle.Parameters.AddWithValue("@k5", DateTime.Now.ToString());
+            ekle.ExecuteNonQuery();
+            Baglan.connection.Close();
+        }
+
+        public static void veresiyeEkle(string isim, string borc)
+        {
+            Baglan.connection.Open();
+
+            SQLiteCommand ekle = new SQLiteCommand("insert into veresiye (isim,ToplamBorc) values (@k1,@k2)", Baglan.connection);
+            ekle.Parameters.AddWithValue("@k1", isim);
+            ekle.Parameters.AddWithValue("@k2", borc);
+            ekle.ExecuteNonQuery();
+
+
+            Baglan.connection.Close();
+        }
+
     }
     public class Baglan
     {

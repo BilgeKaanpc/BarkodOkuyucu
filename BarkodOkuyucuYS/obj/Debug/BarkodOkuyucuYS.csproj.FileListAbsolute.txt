@@ -22,3 +22,5 @@ D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\bin\Debug\EntityFramework.SqlServer.xm
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\bin\Debug\System.Data.SQLite.xml
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.csproj.CopyComplete
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.urunlerListesi.resources
+D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.nakitsatis.resources
+D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.veresiye.resources

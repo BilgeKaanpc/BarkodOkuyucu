@@ -83,6 +83,12 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <Compile Include="nakitsatis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="nakitsatis.Designer.cs">
+      <DependentUpon>nakitsatis.cs</DependentUpon>
+    </Compile>
     <Compile Include="productAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,12 @@
     <Compile Include="urunlerListesi.Designer.cs">
       <DependentUpon>urunlerListesi.cs</DependentUpon>
     </Compile>
+    <Compile Include="veresiye.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="veresiye.Designer.cs">
+      <DependentUpon>veresiye.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="fiyatguncelle.resx">
       <DependentUpon>fiyatguncelle.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="nakitsatis.resx">
+      <DependentUpon>nakitsatis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="productAdd.resx">
       <DependentUpon>productAdd.cs</DependentUpon>
@@ -129,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="urunlerListesi.resx">
       <DependentUpon>urunlerListesi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="veresiye.resx">
+      <DependentUpon>veresiye.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

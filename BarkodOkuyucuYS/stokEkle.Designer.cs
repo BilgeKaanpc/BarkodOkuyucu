@@ -66,6 +66,7 @@ namespace BarkodOkuyucuYS
             this.textBox1.Size = new System.Drawing.Size(283, 20);
             this.textBox1.TabIndex = 2;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // maskedTextBox1
             // 
@@ -76,6 +77,7 @@ namespace BarkodOkuyucuYS
             this.maskedTextBox1.TabIndex = 3;
             this.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.maskedTextBox1.ValidatingType = typeof(int);
+            this.maskedTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.maskedTextBox1_KeyPress);
             // 
             // button1
             // 
@@ -86,6 +88,7 @@ namespace BarkodOkuyucuYS
             this.button1.TabIndex = 4;
             this.button1.Text = "Ekle";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -102,21 +105,20 @@ namespace BarkodOkuyucuYS
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label3.Location = new System.Drawing.Point(231, 144);
+            this.label3.Location = new System.Drawing.Point(128, 165);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 24);
+            this.label3.Size = new System.Drawing.Size(98, 24);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Ürün Adı";
+            this.label3.Text = "Ürün Adı:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label4.Location = new System.Drawing.Point(190, 179);
+            this.label4.Location = new System.Drawing.Point(240, 165);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(175, 24);
+            this.label4.Size = new System.Drawing.Size(0, 24);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Ürün Adı Gelecek";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // stokEkle
@@ -134,6 +136,7 @@ namespace BarkodOkuyucuYS
             this.Controls.Add(this.label1);
             this.Name = "stokEkle";
             this.Text = "stokEkle";
+            this.Load += new System.EventHandler(this.stokEkle_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Data.SQLite;
+using System.IO;
 namespace BarkodOkuyucuYS
 {
     public partial class fiyatguncelle : Form
@@ -20,6 +22,58 @@ namespace BarkodOkuyucuYS
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (textBox2.Text.Length < 1 || textBox1.Text.Length < 1)
+            {
+                if (textBox2.Text.Length < 1)
+                {
+                    MessageBox.Show("Yeni satış fiyatını girmediniz");
+                }
+                if (textBox1.Text.Length < 1)
+                {
+                    MessageBox.Show("Ürün Barkodunu Girmediniz.");
+                }
+
+            }
+            else
+            {
+                if (textBox3.Text.Length < 1)
+                {
+                    textBox3.Text = " ";
+                }
+                DatabaseHelper.DataUpdate(textBox2.Text, textBox3.Text, textBox1.Text);
+                textBox1.Clear();
+                textBox2.Clear();
+                textBox3.Clear();
+            }
+            
+            
+        }
+
+        private void fiyatguncelle_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            Baglan.connection.Open();
+            if(textBox1.Text.Length > 3)
+            {
+                SQLiteCommand search = new SQLiteCommand("Select * From urunler where barkod = " + textBox1.Text, Baglan.connection);
+                SQLiteDataReader drm = search.ExecuteReader();
+                while (drm.Read())
+                {
+                    label5.Text = drm["satis"].ToString();
+                    label8.Text = drm["alis"].ToString();
+                    label3.Text = drm["isim"].ToString();
+                }
+            }
+            
+            Baglan.connection.Close();
         }
     }
 }
