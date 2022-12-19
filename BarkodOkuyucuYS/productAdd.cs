@@ -34,7 +34,7 @@ namespace BarkodOkuyucuYS
         {
             this.Close();
         }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -71,61 +71,89 @@ namespace BarkodOkuyucuYS
         }
         
     }
+
+    
     public class DatabaseHelper
     {
 
         static DataTable dt;
+
+        public static bool checkBarkod(string barkod)
+        {
+            SQLiteCommand control = new SQLiteCommand("select * from urunler",Baglan.connection);
+
+            SQLiteDataReader test = control.ExecuteReader();
+
+            while (test.Read())
+            {
+                if (test["barkod"].ToString() == barkod)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public static void DataAdd(MaskedTextBox t1, TextBox t2, MaskedTextBox t3, MaskedTextBox t5, MaskedTextBox t4,RadioButton r1,RadioButton r2,RadioButton r3)
         {
             Baglan.connection.Open();
 
             SQLiteCommand ekle = new SQLiteCommand("insert into urunler (barkod,isim,satis,alis,stok,tur) values (@k1,@k2,@k3,@k4,@k5,@k6)", Baglan.connection);
 
-
-            ekle.Parameters.AddWithValue("@k1", t1.Text);
-            ekle.Parameters.AddWithValue("@k2", t2.Text);
-            ekle.Parameters.AddWithValue("@k4", t3.Text);
-
-            if (t5.Text.Length > 1)
+             bool canAdd = checkBarkod(t1.Text);
+            if (canAdd)
             {
 
-                ekle.Parameters.AddWithValue("@k3", t5.Text);
+                ekle.Parameters.AddWithValue("@k1", t1.Text);
+                ekle.Parameters.AddWithValue("@k2", t2.Text);
+                ekle.Parameters.AddWithValue("@k4", t3.Text);
+
+                if (t5.Text.Length > 1)
+                {
+
+                    ekle.Parameters.AddWithValue("@k3", t5.Text);
+                }
+                else
+                {
+                    ekle.Parameters.AddWithValue("@k3", "");
+                }
+                if (t4.Text.Length > 1)
+                {
+
+                    ekle.Parameters.AddWithValue("@k5", int.Parse(t4.Text));
+                }
+                else
+                {
+
+                    ekle.Parameters.AddWithValue("@k5", 0);
+                }
+
+                if (r1.Checked)
+                {
+                    ekle.Parameters.AddWithValue("@k6", "Alkol");
+                    r1.Checked = false;
+                }
+                else if (r2.Checked)
+                {
+                    ekle.Parameters.AddWithValue("@k6", "Bira");
+                    r2.Checked = false;
+                }
+                else if (r3.Checked)
+                {
+                    ekle.Parameters.AddWithValue("@k6", "Sigara");
+                    r3.Checked = false;
+                }
+                else
+                {
+                    ekle.Parameters.AddWithValue("@k6", "Diğer");
+                }
+
+                ekle.ExecuteNonQuery();
             }
             else
             {
-                ekle.Parameters.AddWithValue("@k3", "");
-            }
-            if (t4.Text.Length > 1)
-            {
-
-                ekle.Parameters.AddWithValue("@k5", int.Parse(t4.Text));
-            }
-            else
-            {
-
-                ekle.Parameters.AddWithValue("@k5", 0);
+                MessageBox.Show("Ürün Zaten Eklenmiş");
             }
 
-            if (r1.Checked)
-            {
-                ekle.Parameters.AddWithValue("@k6", "Alkol");
-                r1.Checked = false;
-            }
-            else if (r2.Checked)
-            {
-                ekle.Parameters.AddWithValue("@k6", "Bira");
-                r2.Checked = false;
-            }
-            else if (r3.Checked)
-            {
-                ekle.Parameters.AddWithValue("@k6", "Sigara");
-                r3.Checked = false;
-            }
-            else
-            {
-                ekle.Parameters.AddWithValue("@k6", "Diğer");
-            }
-            ekle.ExecuteNonQuery();
 
             Baglan.connection.Close();
             t1.Clear();
@@ -183,18 +211,58 @@ namespace BarkodOkuyucuYS
             ekle.Parameters.AddWithValue("@k4", urunler);
             ekle.Parameters.AddWithValue("@k5", DateTime.Now.ToString());
             ekle.ExecuteNonQuery();
+
             Baglan.connection.Close();
         }
 
-        public static void veresiyeEkle(string isim, string borc)
+        public static int veresiyeName;
+        public static float borc;
+        public static bool checkVeresiye(string isim)
+        {
+            SQLiteCommand control = new SQLiteCommand("select * from veresiye", Baglan.connection);
+
+            SQLiteDataReader test = control.ExecuteReader();
+
+            while (test.Read())
+            {
+                if (test["isim"].ToString() == isim)
+                {
+                    veresiyeName = int.Parse(test["kisiID"].ToString());
+                    borc = float.Parse(test["ToplamBorc"].ToString());
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static void veresiyeEkle(string isim, float borcu,float newValue,string tur, string total, string kar, string urunler)
         {
             Baglan.connection.Open();
 
-            SQLiteCommand ekle = new SQLiteCommand("insert into veresiye (isim,ToplamBorc) values (@k1,@k2)", Baglan.connection);
-            ekle.Parameters.AddWithValue("@k1", isim);
-            ekle.Parameters.AddWithValue("@k2", borc);
-            ekle.ExecuteNonQuery();
+            bool exist = checkVeresiye(isim);
+            if (exist)
+            {
+                borc = borc + newValue;
+                SQLiteCommand updateBorc = new SQLiteCommand("Update veresiye Set ToplamBorc = '" + borc.ToString() + " ' Where kisiID = " + veresiyeName, Baglan.connection);
+                updateBorc.ExecuteNonQuery();
+            }
+            else
+            {
 
+                SQLiteCommand ekle = new SQLiteCommand("insert into veresiye (isim,ToplamBorc) values (@k1,@k2)", Baglan.connection);
+                ekle.Parameters.AddWithValue("@k1", isim);
+                ekle.Parameters.AddWithValue("@k2", newValue.ToString());
+
+                ekle.ExecuteNonQuery();
+            }
+
+
+            SQLiteCommand satisekle = new SQLiteCommand("insert into satislar (tur,total,kar,urunler,tarih) values (@k1,@k2,@k3,@k4,@k5)", Baglan.connection);
+            satisekle.Parameters.AddWithValue("@k1", tur);
+            satisekle.Parameters.AddWithValue("@k2", total);
+            satisekle.Parameters.AddWithValue("@k3", kar);
+            satisekle.Parameters.AddWithValue("@k4", urunler);
+            satisekle.Parameters.AddWithValue("@k5", DateTime.Now.ToString());
+            satisekle.ExecuteNonQuery();
 
             Baglan.connection.Close();
         }

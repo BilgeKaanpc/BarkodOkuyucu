@@ -115,6 +115,12 @@
     <Compile Include="veresiye.Designer.cs">
       <DependentUpon>veresiye.cs</DependentUpon>
     </Compile>
+    <Compile Include="veresiyedefteri.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="veresiyedefteri.Designer.cs">
+      <DependentUpon>veresiyedefteri.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="fiyatguncelle.resx">
       <DependentUpon>fiyatguncelle.cs</DependentUpon>
     </EmbeddedResource>
@@ -147,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="veresiye.resx">
       <DependentUpon>veresiye.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="veresiyedefteri.resx">
+      <DependentUpon>veresiyedefteri.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

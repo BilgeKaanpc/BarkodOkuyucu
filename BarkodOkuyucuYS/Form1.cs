@@ -15,6 +15,7 @@ namespace BarkodOkuyucuYS
     public partial class Form1 : Form
     {
         public Form2 islemlerForm;
+        veresiye veresiye;
         public nakitsatis nakitSatis;
 
         public Form1()
@@ -189,15 +190,27 @@ namespace BarkodOkuyucuYS
             ClearAll();
             MessageBox.Show("Kart Satışı Kaydedildi.");
         }
-        veresiye veresiye = new veresiye();
         private void button6_Click(object sender, EventArgs e)
         {
-            veresiye.Show();
+            veresiyedefteri defter = new veresiyedefteri();
+            
+            defter.Show();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            veresiye = new veresiye();
+            veresiye.eklenen = toplamTutar;
+            karHesapla();
+            veresiye.kar = kar;
+            veresiye.urunler = urunlerList();
+            veresiye.Show();
+            ClearAll();
+        }
 
+        private void button7_Click(object sender, EventArgs e)
+        {
+            ClearAll();
         }
     }
 
