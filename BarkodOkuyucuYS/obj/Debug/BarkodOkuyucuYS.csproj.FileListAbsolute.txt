@@ -25,3 +25,4 @@ D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.urunlerListe
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.nakitsatis.resources
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.veresiye.resources
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.veresiyedefteri.resources
+D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.satislar.resources

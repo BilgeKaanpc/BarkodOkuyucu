@@ -97,6 +97,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="satislar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="satislar.Designer.cs">
+      <DependentUpon>satislar.cs</DependentUpon>
+    </Compile>
     <Compile Include="stokEkle.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +151,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="satislar.resx">
+      <DependentUpon>satislar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="stokEkle.resx">
       <DependentUpon>stokEkle.cs</DependentUpon>
     </EmbeddedResource>

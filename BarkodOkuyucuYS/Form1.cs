@@ -37,6 +37,7 @@ namespace BarkodOkuyucuYS
         {
             textBox1.Focus();
             satisTablosu.Columns.Add("Barkod", typeof(string));
+            satisTablosu.Columns.Add("Tür", typeof(string));
             satisTablosu.Columns.Add("Isim", typeof(string));
             satisTablosu.Columns.Add("Fiyat", typeof(string));
             satisTablosu.Columns.Add("Stok Bilgisi", typeof(int));
@@ -44,17 +45,32 @@ namespace BarkodOkuyucuYS
             satisTablosu.Columns.Add("Toplam Fiyat", typeof(string));
             bindingSource1.DataSource = satisTablosu;
             dataGridView1.DataSource = bindingSource1;
+            DataGridViewColumn column = dataGridView1.Columns[0];
+            DataGridViewColumn column1 = dataGridView1.Columns[1];
+            DataGridViewColumn column2 = dataGridView1.Columns[2];
+            DataGridViewColumn column3 = dataGridView1.Columns[3];
+            DataGridViewColumn column4 = dataGridView1.Columns[4];
+            DataGridViewColumn column5 = dataGridView1.Columns[5];
+            column.Width = 70;
+            column1.Width = 70;
+            column2.Width = 400;
+            column3.Width = 40;
+            column4.Width = 40;
+            column5.Width = 40;
             textBox1.Focus();
-           
+
         }
         public void fiyatAdd(int index, int adet)
         {
-            string Fiyat = satisTablosu.Rows[index]["Fiyat"].ToString();
+            
 
-            float netDeger = float.Parse(Fiyat);
+                string Fiyat = satisTablosu.Rows[index]["Fiyat"].ToString();
+
+                float netDeger = float.Parse(Fiyat);
 
 
-            satisTablosu.Rows[index]["Toplam Fiyat"] = netDeger * adet;
+                satisTablosu.Rows[index]["Toplam Fiyat"] = netDeger * adet;
+           
         }
         public float toplamTutar = 0;
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -75,7 +91,10 @@ namespace BarkodOkuyucuYS
                     fiyatAdd(i, newAdet);
                     return -1;
                 }
-
+                if(satisTablosu.Rows[i]["Adet"].ToString() == "0")
+                {
+                    satisTablosu.Rows.RemoveAt(i);
+                }
             }
 
             DataRow dr = satisTablosu.NewRow();
@@ -83,6 +102,7 @@ namespace BarkodOkuyucuYS
             dr["Isim"] = drm["isim"].ToString();
             dr["Fiyat"] = drm["satis"].ToString();
             dr["Stok Bilgisi"] = drm["stok"].ToString();
+            dr["Tür"] = drm["tur"].ToString();
             dr["Adet"] = 1;
 
             dr["Toplam Fiyat"] = drm["satis"].ToString();
@@ -106,8 +126,12 @@ namespace BarkodOkuyucuYS
             {
 
                 string urunFiyati = satisTablosu.Rows[i]["Toplam Fiyat"].ToString();
-                float tutar = float.Parse(urunFiyati);
-                toplamTutar = toplamTutar + tutar;
+                if(urunFiyati != "")
+                {
+
+                    float tutar = float.Parse(urunFiyati);
+                    toplamTutar = toplamTutar + tutar;
+                }
 
             }
             label3.Text = toplamTutar.ToString();
@@ -121,18 +145,33 @@ namespace BarkodOkuyucuYS
         {
 
             string adet = satisTablosu.Rows[e.RowIndex]["Adet"].ToString();
-            int newAdet = int.Parse(adet);
-            fiyatAdd(e.RowIndex, newAdet);
+            if(int.Parse(adet) == 0)
+            {
+                satisTablosu.Rows.RemoveAt(e.RowIndex);
+
+                bindingSource1.DataSource = satisTablosu;
+                dataGridView1.DataSource = bindingSource1;
+            }
+            else
+            {
+                int newAdet = int.Parse(adet);
+                fiyatAdd(e.RowIndex, newAdet);
+            }
+
+            
             toplamTutar = 0;
             for (int i = 0; i < satisTablosu.Rows.Count; i++)
             {
 
                 string urunFiyati = satisTablosu.Rows[i]["Toplam Fiyat"].ToString();
-                float tutar = float.Parse(urunFiyati);
-                toplamTutar = toplamTutar + tutar;
+                if(urunFiyati != "")
+                {
+
+                    float tutar = float.Parse(urunFiyati);
+                    toplamTutar = toplamTutar + tutar;
+                }
 
             }
-            
             label3.Text = toplamTutar.ToString();
             textBox1.Focus();
         }
@@ -153,7 +192,27 @@ namespace BarkodOkuyucuYS
                 textBox1.Focus();
             }
         }
+        public void stokDusus()
+        {
+            for(int i = 0; i < satisTablosu.Rows.Count; i++)
+            {
+                if (satisTablosu.Rows[i]["Tür"].ToString() == "Sigara" || satisTablosu.Rows[i]["Tür"].ToString() == "Bira"|| satisTablosu.Rows[i]["Tür"].ToString() == "Alkol")
+                {
+                    int value = 0;
+                    Baglan.connection.Open();
+                    SQLiteCommand search = new SQLiteCommand("Select * From urunler where barkod = " + satisTablosu.Rows[i]["Barkod"].ToString(), Baglan.connection);
+                    SQLiteDataReader drm = search.ExecuteReader();
+                    while (drm.Read())
+                    {
+                        value = int.Parse(drm["stok"].ToString()) - int.Parse(satisTablosu.Rows[i]["Adet"].ToString());
+                    }
 
+                    Baglan.connection.Close();
+                    DatabaseHelper.stokEkle(value, satisTablosu.Rows[i]["Barkod"].ToString());
+                }
+            }
+
+        }
         public string urunlerList()
         {
             string urunler = "";
@@ -173,6 +232,12 @@ namespace BarkodOkuyucuYS
         }
         private void button3_Click(object sender, EventArgs e)
         {
+            if (toplamTutar == 0)
+            {
+                MessageBox.Show("Ürün Yok!");
+                return;
+            }
+            stokDusus();
             nakitSatis = new nakitsatis();
             nakitSatis.tutar = toplamTutar;
             nakitSatis.urunList = urunlerList();
@@ -184,8 +249,13 @@ namespace BarkodOkuyucuYS
 
         private void button5_Click(object sender, EventArgs e)
         {
+            if (toplamTutar == 0)
+            {
+                MessageBox.Show("Ürün Yok!");
+                return;
+            }
             karHesapla();
-            
+            stokDusus();
             DatabaseHelper.satisEkle("Kart",toplamTutar.ToString(),kar.ToString(),urunlerList());
             ClearAll();
             MessageBox.Show("Kart Satışı Kaydedildi.");
@@ -199,6 +269,12 @@ namespace BarkodOkuyucuYS
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if(toplamTutar == 0)
+            {
+                MessageBox.Show("Ürün Yok!");
+                return;
+            }
+            stokDusus();
             veresiye = new veresiye();
             veresiye.eklenen = toplamTutar;
             karHesapla();
@@ -211,6 +287,12 @@ namespace BarkodOkuyucuYS
         private void button7_Click(object sender, EventArgs e)
         {
             ClearAll();
+        }
+        satislar satislar;
+        private void button8_Click(object sender, EventArgs e)
+        {
+            satislar = new satislar();
+            satislar.Show();
         }
     }
 

@@ -267,6 +267,8 @@ namespace BarkodOkuyucuYS
             Baglan.connection.Close();
         }
 
+       
+
     }
     public class Baglan
     {

@@ -24,7 +24,7 @@ namespace BarkodOkuyucuYS
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DatabaseHelper.veresiyeEkle(textBox1.Text.ToLower(), borcu, eklenen, textBox1.Text.ToLower(), eklenen.ToString(), kar.ToString(), urunler);
+            DatabaseHelper.veresiyeEkle(textBox1.Text.ToLower(), borcu, eklenen, "Veresiye : " + textBox1.Text.ToLower(), eklenen.ToString(), kar.ToString(), urunler);
             updateData();
 
             MessageBox.Show(textBox1.Text+ " kişisine " + eklenen+ " eklendi");

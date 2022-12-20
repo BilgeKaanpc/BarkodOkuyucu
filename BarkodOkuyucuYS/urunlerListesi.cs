@@ -20,7 +20,23 @@ namespace BarkodOkuyucuYS
         private void urunlerListesi_Load(object sender, EventArgs e)
         {
             string sql = "Select * from urunler";
+
+           
             FilterListe(sql);
+            DataGridViewColumn column = dataGridView1.Columns[0];
+            DataGridViewColumn column1 = dataGridView1.Columns[1];
+            DataGridViewColumn column2 = dataGridView1.Columns[2];
+            DataGridViewColumn column3 = dataGridView1.Columns[3];
+            DataGridViewColumn column4 = dataGridView1.Columns[4];
+            DataGridViewColumn column5 = dataGridView1.Columns[5];
+            DataGridViewColumn column6 = dataGridView1.Columns[6];
+            column.Width = 40;
+            column1.Width = 100;
+            column2.Width = 400;
+            column3.Width = 40;
+            column4.Width = 40;
+            column5.Width = 40;
+            column6.Width = 60;
         }
 
         private void button5_Click(object sender, EventArgs e)
