@@ -16,7 +16,7 @@ namespace BarkodOkuyucuYS
         public float paraUstu;
         public string urunList;
         public float kar;
-
+        Form1 mainForm = new Form1();
         public nakitsatis()
         {
             InitializeComponent();
@@ -26,13 +26,17 @@ namespace BarkodOkuyucuYS
         {
             DatabaseHelper.satisEkle("Nakit",tutar.ToString(),kar.ToString(),urunList);
             MessageBox.Show("Nakit Satış kaydedildi");
-
+            mainForm.GunSonuAl();
             this.Close();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            label4.Text = (float.Parse(textBox1.Text) - tutar).ToString();
+            if (textBox1.Text.All(char.IsDigit) && textBox1.Text != "")
+            {
+
+                label4.Text = (float.Parse(textBox1.Text) - tutar).ToString();
+            }
         }
 
         private void nakitsatis_Load(object sender, EventArgs e)

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Data.SQLite;
+using System.IO;
 namespace BarkodOkuyucuYS
 {
     public partial class urunlerListesi : Form
@@ -85,6 +87,18 @@ namespace BarkodOkuyucuYS
         {
             string sql = "Select * From urunler Where tur Like '%Sigara%'";
             FilterListe(sql);
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+            int secilen = dataGridView1.SelectedCells[0].RowIndex;
+            string ID = dataGridView1.Rows[secilen].Cells[0].Value.ToString();
+            string newValue = dataGridView1.Rows[secilen].Cells[5].Value.ToString();
+            Baglan.connection.Open();
+            SQLiteCommand update = new SQLiteCommand("Update urunler set stok= '" + newValue.ToString() + " ' where urunID = " + ID, Baglan.connection);
+            update.ExecuteNonQuery();
+            Baglan.connection.Close();
         }
     }
 }

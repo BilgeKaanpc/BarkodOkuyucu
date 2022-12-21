@@ -17,6 +17,7 @@ namespace BarkodOkuyucuYS
         public float eklenen;
         public float kar;
         public string urunler;
+        Form1 mainForm = new Form1();
         public veresiye()
         {
             InitializeComponent();
@@ -26,8 +27,9 @@ namespace BarkodOkuyucuYS
         {
             DatabaseHelper.veresiyeEkle(textBox1.Text.ToLower(), borcu, eklenen, "Veresiye : " + textBox1.Text.ToLower(), eklenen.ToString(), kar.ToString(), urunler);
             updateData();
-
+            mainForm.GunSonuAl();
             MessageBox.Show(textBox1.Text+ " kişisine " + eklenen+ " eklendi");
+
         }
 
         private void veresiye_Load(object sender, EventArgs e)

@@ -26,3 +26,4 @@ D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.nakitsatis.r
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.veresiye.resources
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.veresiyedefteri.resources
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.satislar.resources
+D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.gunsonlari.resources
