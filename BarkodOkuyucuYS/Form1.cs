@@ -33,8 +33,32 @@ namespace BarkodOkuyucuYS
 
        public DataTable satisTablosu = new DataTable();
         private BindingSource bindingSource1 = new BindingSource();
+
+        public void addPlace()
+        {
+            comboBox1.Items.Clear();
+            Baglan.connection.Open();
+
+            SQLiteDataAdapter addToList = new SQLiteDataAdapter("select * from urunler",Baglan.connection);
+            DataTable urunlerListim = new DataTable();
+            addToList.Fill(urunlerListim);
+
+            int index = urunlerListim.Columns.IndexOf("tur");
+            var colums = urunlerListim.Columns.Cast<DataColumn>().Skip(index).ToList();
+
+            foreach (DataColumn colum in colums)
+            {
+                comboBox1.Items.Add(colum.ColumnName);
+            }
+
+
+            Baglan.connection.Close();
+
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
+            addPlace();
+
             textBox1.Focus();
             satisTablosu.Columns.Add("Barkod", typeof(string));
             satisTablosu.Columns.Add("Tür", typeof(string));
@@ -113,8 +137,11 @@ namespace BarkodOkuyucuYS
         }
         private void button2_Click(object sender, EventArgs e)
         {
+            
+
+
             Baglan.connection.Open();
-           SQLiteDataReader drm = DatabaseHelper.getData(textBox1.Text);
+            SQLiteDataReader drm = DatabaseHelper.getData(textBox1.Text);
             while (drm.Read())
             {
 
@@ -126,7 +153,7 @@ namespace BarkodOkuyucuYS
             {
 
                 string urunFiyati = satisTablosu.Rows[i]["Toplam Fiyat"].ToString();
-                if(urunFiyati != "")
+                if (urunFiyati != "")
                 {
 
                     float tutar = float.Parse(urunFiyati);
@@ -134,9 +161,8 @@ namespace BarkodOkuyucuYS
                 }
 
             }
-            label3.Text = toplamTutar.ToString();
             Baglan.connection.Close();
-
+            label3.Text = toplamTutar.ToString();
             textBox1.Clear();
             textBox1.Focus();
         }
@@ -428,6 +454,76 @@ namespace BarkodOkuyucuYS
         {
             gunsonlari = new gunsonlari();
             gunsonlari.Show();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+
+            if (textBox3.Text.All(char.IsDigit) && textBox3.Text.Length > 1)
+            {
+
+                DataRow barkodsuzUrun = satisTablosu.NewRow();
+                barkodsuzUrun["Barkod"] = "Barkodsuz Ürün";
+                barkodsuzUrun["Isim"] = textBox2.Text;
+                if (textBox4.Text.Length < 1)
+                {
+                    barkodsuzUrun["Adet"] = "1";
+                }
+                else
+                {
+                    barkodsuzUrun["Adet"] = int.Parse(textBox4.Text);
+                }
+                barkodsuzUrun["Tür"] = "Diğer";
+                barkodsuzUrun["Fiyat"] = float.Parse(textBox3.Text);
+                barkodsuzUrun["Stok Bilgisi"] = "0";
+                barkodsuzUrun["Toplam Fiyat"] = float.Parse(textBox3.Text) * int.Parse(barkodsuzUrun["Adet"].ToString());
+
+                satisTablosu.Rows.Add(barkodsuzUrun);
+                toplamTutar = 0;
+                for (int i = 0; i < satisTablosu.Rows.Count; i++)
+                {
+
+                    string urunFiyati = satisTablosu.Rows[i]["Toplam Fiyat"].ToString();
+                    float tutar = float.Parse(urunFiyati);
+                    toplamTutar = toplamTutar + tutar;
+
+                }
+                label3.Text = toplamTutar.ToString();
+                textBox2.Clear();
+                textBox3.Clear();
+                textBox4.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Barkodsuz ürünün fiyat bilgisi girilmeli!");
+
+                textBox2.Clear();
+                textBox3.Clear();
+                textBox4.Clear();
+            }
+                
+
+            
+
+        }
+
+        mekanlar mekanlar;
+        private void button11_Click(object sender, EventArgs e)
+        {
+            mekanlar = new mekanlar();
+            mekanlar.Show();
+        }
+
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            Form1_Load(sender,e);
         }
     }
 

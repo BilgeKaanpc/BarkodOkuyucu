@@ -200,7 +200,18 @@ namespace BarkodOkuyucuYS
             update.ExecuteNonQuery();
             Baglan.connection.Close();
         }
+        public static void showMessage(string metin, string title, IWin32Window window)
+        {
+            ToolTip toolTip = new ToolTip();
 
+            // Set the warning text and duration
+            toolTip.IsBalloon = true;
+            toolTip.ToolTipIcon = ToolTipIcon.Info;
+            toolTip.ToolTipTitle = title;
+
+            // Show the message for 5 seconds
+            toolTip.Show(metin, window, 0, 0, 5000);
+        }
         public static void satisEkle(string tur,string total,string kar,string urunler)
         {
             Baglan.connection.Open();

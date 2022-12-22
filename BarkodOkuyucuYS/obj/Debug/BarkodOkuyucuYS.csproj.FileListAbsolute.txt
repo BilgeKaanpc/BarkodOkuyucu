@@ -27,3 +27,4 @@ D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.veresiye.res
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.veresiyedefteri.resources
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.satislar.resources
 D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.gunsonlari.resources
+D:\Githubim\BarkodOkuyucu\BarkodOkuyucuYS\obj\Debug\BarkodOkuyucuYS.mekanlar.resources
