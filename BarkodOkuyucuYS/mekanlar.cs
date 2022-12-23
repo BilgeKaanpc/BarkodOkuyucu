@@ -51,7 +51,7 @@ namespace BarkodOkuyucuYS
         private void button3_Click(object sender, EventArgs e)
         {
             
-            //this.Close();
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -110,7 +110,7 @@ namespace BarkodOkuyucuYS
         private void button1_Click(object sender, EventArgs e)
         {
             Baglan.connection.Open();
-            SQLiteCommand updatePrice = new SQLiteCommand("Update urunler set " + comboBox1.SelectedItem.ToString() + " = " + textBox3.Text.ToString() + "  where barkod = " + textBox2.Text, Baglan.connection);
+            SQLiteCommand updatePrice = new SQLiteCommand("Update urunler set '" + comboBox1.SelectedItem.ToString() + "' = " + textBox3.Text.ToString() + "  where barkod = " + textBox2.Text, Baglan.connection);
             updatePrice.ExecuteNonQuery();
 
             DatabaseHelper.showMessage("Ürün Fiyatı Güncellendi","Bilgi", this);

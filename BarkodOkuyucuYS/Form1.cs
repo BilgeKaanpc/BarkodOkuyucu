@@ -44,14 +44,15 @@ namespace BarkodOkuyucuYS
             addToList.Fill(urunlerListim);
 
             int index = urunlerListim.Columns.IndexOf("tur");
-            var colums = urunlerListim.Columns.Cast<DataColumn>().Skip(index).ToList();
+            var colums = urunlerListim.Columns.Cast<DataColumn>().Skip(index+1).ToList();
 
+            comboBox1.Items.Add("Normal Satış");
             foreach (DataColumn colum in colums)
             {
                 comboBox1.Items.Add(colum.ColumnName);
             }
 
-
+            comboBox1.SelectedIndex = 0;
             Baglan.connection.Close();
 
         }
@@ -104,65 +105,108 @@ namespace BarkodOkuyucuYS
 
         public int control(SQLiteDataReader drm)
         {
-            for (int i = 0; i < satisTablosu.Rows.Count; i++)
+
+
+            if(comboBox1.SelectedItem.ToString() == "Normal Satış")
             {
-                if (satisTablosu.Rows[i]["Barkod"].ToString() == textBox1.Text)
-                {
-                    string adet = satisTablosu.Rows[i]["Adet"].ToString();
-                    int newAdet = int.Parse(adet) + 1;
-                    satisTablosu.Rows[i]["Adet"] = newAdet;
 
-                    fiyatAdd(i, newAdet);
-                    return -1;
-                }
-                if(satisTablosu.Rows[i]["Adet"].ToString() == "0")
+                for (int i = 0; i < satisTablosu.Rows.Count; i++)
                 {
-                    satisTablosu.Rows.RemoveAt(i);
+                    if (satisTablosu.Rows[i]["Barkod"].ToString() == textBox1.Text)
+                    {
+                        string adet = satisTablosu.Rows[i]["Adet"].ToString();
+                        int newAdet = int.Parse(adet) + 1;
+                        satisTablosu.Rows[i]["Adet"] = newAdet;
+
+                        fiyatAdd(i, newAdet);
+                        return -1;
+                    }
+                    if (satisTablosu.Rows[i]["Adet"].ToString() == "0")
+                    {
+                        satisTablosu.Rows.RemoveAt(i);
+                    }
                 }
+
+                DataRow dr = satisTablosu.NewRow();
+                dr["Barkod"] = drm["barkod"].ToString();
+                dr["Isim"] = drm["isim"].ToString();
+                dr["Fiyat"] = drm["satis"].ToString();
+                dr["Stok Bilgisi"] = drm["stok"].ToString();
+                dr["Tür"] = drm["tur"].ToString();
+                dr["Adet"] = 1;
+
+                dr["Toplam Fiyat"] = drm["satis"].ToString();
+                satisTablosu.Rows.Add(dr);
+
+
+                return 1;
             }
+            else
+            {
 
-            DataRow dr = satisTablosu.NewRow();
-            dr["Barkod"] = drm["barkod"].ToString();
-            dr["Isim"] = drm["isim"].ToString();
-            dr["Fiyat"] = drm["satis"].ToString();
-            dr["Stok Bilgisi"] = drm["stok"].ToString();
-            dr["Tür"] = drm["tur"].ToString();
-            dr["Adet"] = 1;
+                for (int i = 0; i < satisTablosu.Rows.Count; i++)
+                {
+                    if (satisTablosu.Rows[i]["Barkod"].ToString() == textBox1.Text)
+                    {
+                        string adet = satisTablosu.Rows[i]["Adet"].ToString();
+                        int newAdet = int.Parse(adet) + 1;
+                        satisTablosu.Rows[i]["Adet"] = newAdet;
 
-            dr["Toplam Fiyat"] = drm["satis"].ToString();
-            satisTablosu.Rows.Add(dr);
+                        fiyatAdd(i, newAdet);
+                        return -1;
+                    }
+                    if (satisTablosu.Rows[i]["Adet"].ToString() == "0")
+                    {
+                        satisTablosu.Rows.RemoveAt(i);
+                    }
+                }
+
+                DataRow dr = satisTablosu.NewRow();
+                dr["Barkod"] = drm["barkod"].ToString();
+                dr["Isim"] = drm["isim"].ToString();
+                dr["Fiyat"] = drm[comboBox1.SelectedItem.ToString()].ToString();
+                dr["Stok Bilgisi"] = drm["stok"].ToString();
+                dr["Tür"] = drm["tur"].ToString();
+                dr["Adet"] = 1;
+
+                dr["Toplam Fiyat"] = drm[comboBox1.SelectedItem.ToString()].ToString();
+                satisTablosu.Rows.Add(dr);
 
 
-            return 1;
+                return 1;
+            }
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            
-
-
-            Baglan.connection.Open();
-            SQLiteDataReader drm = DatabaseHelper.getData(textBox1.Text);
-            while (drm.Read())
+            if (textBox1.Text.Length > 1)
             {
 
-                control(drm);
 
-            }
-            toplamTutar = 0;
-            for (int i = 0; i < satisTablosu.Rows.Count; i++)
-            {
-
-                string urunFiyati = satisTablosu.Rows[i]["Toplam Fiyat"].ToString();
-                if (urunFiyati != "")
+                Baglan.connection.Open();
+                SQLiteDataReader drm = DatabaseHelper.getData(textBox1.Text);
+                while (drm.Read())
                 {
 
-                    float tutar = float.Parse(urunFiyati);
-                    toplamTutar = toplamTutar + tutar;
-                }
+                    control(drm);
 
+                }
+                toplamTutar = 0;
+                for (int i = 0; i < satisTablosu.Rows.Count; i++)
+                {
+
+                    string urunFiyati = satisTablosu.Rows[i]["Toplam Fiyat"].ToString();
+                    if (urunFiyati != "")
+                    {
+
+                        float tutar = float.Parse(urunFiyati);
+                        toplamTutar = toplamTutar + tutar;
+                    }
+
+                }
+                Baglan.connection.Close();
+                label3.Text = toplamTutar.ToString();
             }
-            Baglan.connection.Close();
-            label3.Text = toplamTutar.ToString();
+
             textBox1.Clear();
             textBox1.Focus();
         }
@@ -296,6 +340,7 @@ namespace BarkodOkuyucuYS
             float nakit = 0;
             float kart = 0;
             float veresiye = 0;
+            float goturulen = 0;
 
             DataTable test = new DataTable();
             SQLiteDataAdapter adtr = new SQLiteDataAdapter("select * from satislar where gunsonu = 0", Baglan.connection);
@@ -318,7 +363,8 @@ namespace BarkodOkuyucuYS
                         nakit = float.Parse(dtr2.Rows[0]["nakit"].ToString());
                         kart = float.Parse(dtr2.Rows[0]["kart"].ToString());
                         veresiye = float.Parse(dtr2.Rows[0]["veresiye"].ToString());
-                      
+                    goturulen = float.Parse(dtr2.Rows[0]["goturulen"].ToString());
+
 
                     toplamSatis++;
                     toplamtutarim = toplamtutarim + float.Parse(test.Rows[i]["total"].ToString());
@@ -327,16 +373,20 @@ namespace BarkodOkuyucuYS
                     {
                         nakit = nakit + float.Parse(test.Rows[i]["total"].ToString());
                     }
-                    if (test.Rows[i]["tur"].ToString() == "Kart")
+                    else if (test.Rows[i]["tur"].ToString() == "Kart")
                     {
                         kart = kart + float.Parse(test.Rows[i]["total"].ToString());
                     }
-                    if (test.Rows[i]["tur"].ToString().StartsWith("Vere"))
+                    else if (test.Rows[i]["tur"].ToString().StartsWith("Vere"))
                     {
                         veresiye = veresiye + float.Parse(test.Rows[i]["total"].ToString());
                     }
+                    else
+                    {
+                        goturulen = goturulen + float.Parse(test.Rows[i]["total"].ToString());
+                    }
 
-                    SQLiteCommand updateSatis = new SQLiteCommand("Update gunsonu set toplamsatis= '" + toplamSatis.ToString() + " ',toplamtutar= '" + toplamtutarim.ToString() + " ',toplamkar= '" + toplamkar.ToString() + " ',nakit= '" + nakit.ToString() + " ',kart= '" + kart.ToString() + " ',veresiye= '" + veresiye.ToString() + " ' where tarih Like '%" + test.Rows[i]["tarih"].ToString().Split()[0] + "%'", Baglan.connection);
+                    SQLiteCommand updateSatis = new SQLiteCommand("Update gunsonu set toplamsatis= '" + toplamSatis.ToString() + " ',toplamtutar= '" + toplamtutarim.ToString() + " ',toplamkar= '" + toplamkar.ToString() + " ',nakit= '" + nakit.ToString() + " ',kart= '" + kart.ToString() + " ',veresiye= '" + veresiye.ToString() + " ',goturulen = '" + goturulen.ToString() + " ' where tarih Like '%" + test.Rows[i]["tarih"].ToString().Split()[0] + "%'", Baglan.connection);
 
                     updateSatis.ExecuteNonQuery();
 
@@ -348,7 +398,7 @@ namespace BarkodOkuyucuYS
                     toplamkar = float.Parse(test.Rows[i]["kar"].ToString());
 
                     toplamSatis = 1;
-                    SQLiteCommand ekle = new SQLiteCommand("insert into gunsonu (tarih,toplamsatis,toplamtutar,toplamkar,nakit,kart,veresiye) values (@k1,@k2,@k3,@k4,@k5,@k6,@k7)", Baglan.connection);
+                    SQLiteCommand ekle = new SQLiteCommand("insert into gunsonu (tarih,toplamsatis,toplamtutar,toplamkar,nakit,kart,veresiye,goturulen) values (@k1,@k2,@k3,@k4,@k5,@k6,@k7,@k8)", Baglan.connection);
                     ekle.Parameters.AddWithValue("@k1", test.Rows[i]["tarih"].ToString().Split()[0]);
                     ekle.Parameters.AddWithValue("@k2", toplamSatis.ToString());
                     ekle.Parameters.AddWithValue("@k3", test.Rows[i]["total"].ToString());
@@ -358,20 +408,30 @@ namespace BarkodOkuyucuYS
                         ekle.Parameters.AddWithValue("@k5", test.Rows[i]["total"].ToString());
                         ekle.Parameters.AddWithValue("@k6", 0.ToString());
                         ekle.Parameters.AddWithValue("@k7", 0.ToString());
+                        ekle.Parameters.AddWithValue("@k8", 0.ToString());
                     }
-                    if (test.Rows[i]["tur"].ToString() == "Kart")
+                    else if (test.Rows[i]["tur"].ToString() == "Kart")
                     {
 
                         ekle.Parameters.AddWithValue("@k6", test.Rows[i]["total"].ToString());
                         ekle.Parameters.AddWithValue("@k5", 0.ToString());
                         ekle.Parameters.AddWithValue("@k7", 0.ToString());
+                        ekle.Parameters.AddWithValue("@k8", 0.ToString());
                     }
-                    if (test.Rows[i]["tur"].ToString().StartsWith("Vere"))
+                    else if (test.Rows[i]["tur"].ToString().StartsWith("Vere"))
                     {
 
                         ekle.Parameters.AddWithValue("@k7", test.Rows[i]["total"].ToString());
                         ekle.Parameters.AddWithValue("@k5", 0.ToString());
                         ekle.Parameters.AddWithValue("@k6", 0.ToString());
+                        ekle.Parameters.AddWithValue("@k8", 0.ToString());
+                    }
+                    else
+                    {
+                        ekle.Parameters.AddWithValue("@k7", 0.ToString());
+                        ekle.Parameters.AddWithValue("@k5", 0.ToString());
+                        ekle.Parameters.AddWithValue("@k6", 0.ToString());
+                        ekle.Parameters.AddWithValue("@k8", test.Rows[i]["total"].ToString());
                     }
                     ekle.ExecuteNonQuery();
                 }
@@ -514,16 +574,54 @@ namespace BarkodOkuyucuYS
             mekanlar.Show();
         }
 
+        public void addToPlace(string mekan,float total,float kar)
+        {
+            Baglan.connection.Open();
+            float toplamsatis = 0;
+            float tahminikar = 0;
+            int toplamsiparis = 0;
+            DataTable testy = new DataTable();
+            SQLiteDataAdapter adtrm = new SQLiteDataAdapter("select * from mekanlar where mekanismi Like '%" + mekan + "%'", Baglan.connection);
+            adtrm.Fill(testy);
+            toplamsatis = float.Parse(testy.Rows[0]["toplamsatis"].ToString());
+            tahminikar = float.Parse(testy.Rows[0]["tahminikar"].ToString());
+            toplamsiparis = int.Parse(testy.Rows[0]["toplamsiparis"].ToString());
+
+            toplamsiparis++;
+            tahminikar = tahminikar + kar;
+            toplamsatis = toplamsatis + total;
+
+            SQLiteCommand updatePlace = new SQLiteCommand("Update mekanlar set toplamsatis = '" + toplamsatis.ToString() + "' , tahminikar =  '" + tahminikar.ToString() + "' , toplamsiparis =  '" + toplamsiparis.ToString() + "' where mekanismi Like '%" + mekan + "%'", Baglan.connection);
+            updatePlace.ExecuteNonQuery();
+
+            Baglan.connection.Close();
+        }
 
         private void button12_Click(object sender, EventArgs e)
         {
 
+            if (toplamTutar == 0)
+            {
+                MessageBox.Show("Ürün Yok!");
+                return;
+            }
+            stokDusus();
 
+            karHesapla();
+            DatabaseHelper.satisEkle(comboBox1.SelectedItem.ToString(), toplamTutar.ToString(), kar.ToString(), urunlerList());
+            addToPlace(comboBox1.SelectedItem.ToString(),toplamTutar,kar);
+
+            GunSonuAl();
+
+            DatabaseHelper.showMessage(comboBox1.SelectedItem.ToString() + " satışı kaydedildi", "Bilgi", this);
+            comboBox1.SelectedIndex = 0;
+            ClearAll();
         }
-
+        Form1 fomr1;
         private void button13_Click(object sender, EventArgs e)
         {
-            Form1_Load(sender,e);
+            fomr1 = new Form1();
+            fomr1.Show();
         }
     }
 

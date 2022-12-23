@@ -44,12 +44,12 @@ namespace BarkodOkuyucuYS
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
@@ -221,38 +221,6 @@ namespace BarkodOkuyucuYS
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Barkodsuz Ürün Ekle";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 47);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(95, 16);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Ürün Tanımı:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(57, 78);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(46, 16);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "Fiyat:";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(110, 47);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(229, 22);
-            this.textBox2.TabIndex = 2;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(110, 75);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(229, 22);
-            this.textBox3.TabIndex = 3;
-            // 
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(110, 103);
@@ -269,6 +237,38 @@ namespace BarkodOkuyucuYS
             this.label6.TabIndex = 4;
             this.label6.Text = "Adet:";
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(110, 75);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(229, 22);
+            this.textBox3.TabIndex = 3;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(110, 47);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(229, 22);
+            this.textBox2.TabIndex = 2;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(57, 78);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(46, 16);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Fiyat:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 47);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(95, 16);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Ürün Tanımı:";
+            // 
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("Play", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
@@ -283,11 +283,11 @@ namespace BarkodOkuyucuYS
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("Play", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button11.Location = new System.Drawing.Point(975, 108);
+            this.button11.Location = new System.Drawing.Point(1143, 108);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(364, 52);
+            this.button11.Size = new System.Drawing.Size(201, 52);
             this.button11.TabIndex = 16;
-            this.button11.Text = "Ürün Götürülen Yerler";
+            this.button11.Text = "Mal Giden Yerler";
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
@@ -317,11 +317,11 @@ namespace BarkodOkuyucuYS
             // button13
             // 
             this.button13.Font = new System.Drawing.Font("Play", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button13.Location = new System.Drawing.Point(346, 582);
+            this.button13.Location = new System.Drawing.Point(975, 108);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(149, 58);
+            this.button13.Size = new System.Drawing.Size(162, 52);
             this.button13.TabIndex = 25;
-            this.button13.Text = "Ekle";
+            this.button13.Text = "Yeni Sayfa Aç";
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
