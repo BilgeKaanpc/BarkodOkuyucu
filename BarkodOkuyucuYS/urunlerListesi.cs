@@ -95,8 +95,11 @@ namespace BarkodOkuyucuYS
             int secilen = dataGridView1.SelectedCells[0].RowIndex;
             string ID = dataGridView1.Rows[secilen].Cells[0].Value.ToString();
             string newValue = dataGridView1.Rows[secilen].Cells[5].Value.ToString();
+            string newSatis = dataGridView1.Rows[secilen].Cells[3].Value.ToString();
+            string newIsim = dataGridView1.Rows[secilen].Cells[2].Value.ToString();
+            
             Baglan.connection.Open();
-            SQLiteCommand update = new SQLiteCommand("Update urunler set stok= '" + newValue.ToString() + " ' where urunID = " + ID, Baglan.connection);
+            SQLiteCommand update = new SQLiteCommand("Update urunler set stok= '" + newValue.ToString() + " ',satis = '" + newSatis.ToString() + " ',isim = '" + newIsim.ToString() + " ' where urunID = " + ID, Baglan.connection);
             update.ExecuteNonQuery();
             Baglan.connection.Close();
         }

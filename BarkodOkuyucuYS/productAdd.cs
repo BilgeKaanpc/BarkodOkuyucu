@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.IO;
+using System.Threading;
+
 namespace BarkodOkuyucuYS
 {
     public partial class productAdd : Form
     {
+        Form1 mainForm = new Form1();
         public productAdd()
         {
             InitializeComponent();
@@ -20,7 +23,7 @@ namespace BarkodOkuyucuYS
 
         private void label1_Click(object sender, EventArgs e)
         {
-
+            
         }
 
       
@@ -65,6 +68,7 @@ namespace BarkodOkuyucuYS
 
         }
 
+      
         private void productAdd_Load(object sender, EventArgs e)
         {
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -77,7 +81,7 @@ namespace BarkodOkuyucuYS
     {
 
         static DataTable dt;
-
+        public Form1 mainForm = new Form1();
         public static bool checkBarkod(string barkod)
         {
             SQLiteCommand control = new SQLiteCommand("select * from urunler",Baglan.connection);
@@ -187,7 +191,8 @@ namespace BarkodOkuyucuYS
 
         public static SQLiteDataReader getData(string barkod)
         {
-            SQLiteCommand get = new SQLiteCommand("Select * from urunler where barkod = "+barkod,Baglan.connection);
+            SQLiteCommand get = new SQLiteCommand("Select * from urunler where barkod = @barkod", Baglan.connection);
+            get.Parameters.AddWithValue("@barkod", barkod);
             SQLiteDataReader drm = get.ExecuteReader();
 
             return drm;
@@ -195,10 +200,16 @@ namespace BarkodOkuyucuYS
 
         public static void stokEkle(int value,string barkod)
         {
+            while (Baglan.connection.State == ConnectionState.Open)
+            {
+                Thread.Sleep(500);
+            }
             Baglan.connection.Open();
+            Console.WriteLine("baglantı stokeklede açıldı");
             SQLiteCommand update = new SQLiteCommand("Update urunler set stok= '" + value.ToString() + " ' where barkod = " + barkod, Baglan.connection);
             update.ExecuteNonQuery();
             Baglan.connection.Close();
+            Console.WriteLine("baglantı stokeklede kapatıldı");
         }
         public static void showMessage(string metin, string title, IWin32Window window)
         {
@@ -214,16 +225,20 @@ namespace BarkodOkuyucuYS
         }
         public static void satisEkle(string tur,string total,string kar,string urunler)
         {
+            
             Baglan.connection.Open();
+
+            Console.WriteLine("baglantı satışeklede açıldı");
             SQLiteCommand ekle = new SQLiteCommand("insert into satislar (tur,total,kar,urunler,tarih) values (@k1,@k2,@k3,@k4,@k5)", Baglan.connection);
             ekle.Parameters.AddWithValue("@k1", tur);
             ekle.Parameters.AddWithValue("@k2", total);
             ekle.Parameters.AddWithValue("@k3", kar);
             ekle.Parameters.AddWithValue("@k4", urunler);
             ekle.Parameters.AddWithValue("@k5", DateTime.Now.ToString());
-            ekle.ExecuteNonQuery();
 
+            ekle.ExecuteNonQuery();
             Baglan.connection.Close();
+            Console.WriteLine("baglantı satışeklede kapatıldı");
         }
 
         public static int veresiyeName;

@@ -25,8 +25,7 @@ namespace BarkodOkuyucuYS
         private void button1_Click(object sender, EventArgs e)
         {
             DatabaseHelper.satisEkle("Nakit",tutar.ToString(),kar.ToString(),urunList);
-            MessageBox.Show("Nakit Satış kaydedildi");
-            mainForm.GunSonuAl();
+            DatabaseHelper.showMessage("Nakit satış kaydedildi.", "Bilgi", this);
             this.Close();
         }
 

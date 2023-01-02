@@ -52,10 +52,12 @@ namespace BarkodOkuyucuYS
                     value = int.Parse(maskedTextBox1.Text) + int.Parse(drm["stok"].ToString());
                 }
             }
-            Baglan.connection.Close();
-            DatabaseHelper.stokEkle(value, textBox1.Text);
             MessageBox.Show("Stok Güncellendi");
 
+            Baglan.connection.Close();
+
+
+            DatabaseHelper.stokEkle(value, textBox1.Text);
             textBox1.Clear();
             maskedTextBox1.Clear();
             textBox1.Focus();
