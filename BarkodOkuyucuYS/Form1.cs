@@ -481,6 +481,8 @@ namespace BarkodOkuyucuYS
             Console.WriteLine("baglantı gungonunda kapatıldı");
 
             Thread.Sleep(500);
+            gunsonlari = new gunsonlari();
+            gunsonlari.Show();
         }
 
 
@@ -669,7 +671,7 @@ namespace BarkodOkuyucuYS
             fomr1.Show();
         }
 
-        private void button14_Click(object sender, EventArgs e)
+        public void button14_Click(object sender, EventArgs e)
         {
             gunSonu();
 
